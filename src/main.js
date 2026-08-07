@@ -20,7 +20,6 @@ async function sendTelegramMessage(token, chatId, message) {
     };
     try {
         const response = await axios.post(url, data);
-        console.log('消息已发送到 Telegram');
     } catch (error) {
         console.error('Telegram 消息发生失败');
     }
@@ -77,18 +76,15 @@ async function sendTelegramMessage(token, chatId, message) {
             if (isLoggedIn) {
                 const nowUtc = formatToISO(new Date());
                 const nowBeijing = formatToISO(new Date(new Date().getTime() + 8 * 60 * 60 * 1000)); // 北京时间东8区
-                console.log(`账号 ${username} 于北京时间 ${nowBeijing}（UTC时间 ${nowUtc}）登录成功！`);
                 if (telegramToken && telegramChatId) {
                     await sendTelegramMessage(telegramToken, telegramChatId, `账号 ${username} 于北京时间 ${nowBeijing}（UTC时间 ${nowUtc}）登录成功！`);
                 }
             } else {
-                console.error(`账号 ${username} 登录失败，请检查账号和密码是否正确。`);
                 if (telegramToken && telegramChatId) {
                     await sendTelegramMessage(telegramToken, telegramChatId, `账号 ${username} 登录失败，请检查账号和密码是否正确。`);
                 }
             }
         } catch (error) {
-            console.error(`账号 ${username} 登录时出现错误: ${error}`);
             if (telegramToken && telegramChatId) {
                 await sendTelegramMessage(telegramToken, telegramChatId, `账号 ${username} 登录时出现错误: ${error.message}`);
             }
@@ -99,5 +95,4 @@ async function sendTelegramMessage(token, chatId, message) {
             await delayTime(delay);
         }
     }
-    console.log('所有账号登录完成！');
 })();
