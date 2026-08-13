@@ -2,63 +2,119 @@
    <strong>中文</strong> | <a href="README.md">English</a>
 </div>
 
-<img src="https://www.serv00.com/wp-content/themes/serv00/public/svg/logo.svg" alt="serv00 logo" width="50" height="50" align="right" />
-
 <div align="center">
 
-<h1> Serv00/CT8 - Free Host Auto Renewal </h1>
+<h1>🔄 Serv00/CT8 免费主机自动续签</h1>
 
-<p>Serv00/CT8 - 免费主机自动续期</p>
+<p>自动续签 Serv00 / CT8 免费主机账号的 GitHub Actions 工具</p>
+
+[![License](https://img.shields.io/badge/license-WTFPL-blue)](./LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-green)](https://nodejs.org/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-✓-orange)](https://github.com/features/actions)
+[![Puppeteer](https://img.shields.io/badge/Puppeteer-v24-brightgreen)](https://pptr.dev/)
 
 </div>
 
 <hr/>
 
 <div align="center">
-<a href="https://www.serv00.com/sign-in/">Serv00 登录</a> | 
-<a href="https://docs.serv00.com/">serv00 文档</a> | 
-<a href="https://forum.serv00.com/">serv00 社区</a>
-<a href="https://panel.ct8.pl/">CT8 登录</a> | 
-<a href="https://pomoc.mydevil.net/">CT8 文档</a> | 
-<a href="https://forum.ct8.pl/">CT8 社区</a>
+
+🔗 **相关链接** &nbsp;|&nbsp;
+[Serv00 登录](https://www.serv00.com/sign-in/) &nbsp;|&nbsp;
+[Serv00 文档](https://docs.serv00.com/) &nbsp;|&nbsp;
+[Serv00 社区](https://forum.serv00.com/) &nbsp;|&nbsp;
+[CT8 登录](https://panel.ct8.pl/) &nbsp;|&nbsp;
+[CT8 文档](https://pomoc.mydevil.net/) &nbsp;|&nbsp;
+[CT8 社区](https://forum.ct8.pl/)
+
 </div>
 
 <hr/>
 
-## 使用方法
+## ✨ 功能特点
 
-1. 在 GitHub 仓库中，进入右上角`Settings`
+| 特性 | 说明 |
+|------|------|
+| 🤖 **自动化登录** | 使用 Puppeteer 模拟浏览器自动登录面板 |
+| 📅 **定时任务** | GitHub Actions 每月 1 号自动执行 |
+| 🔔 **消息通知** | 支持 Telegram Bot 推送登录结果 |
+| 🔒 **安全存储** | 账号信息以 Secret 形式保存在 GitHub |
+| 🌐 **多面板支持** | 兼容 panel1~panelN 所有 Serv00/CT8 面板 |
 
-2. 在侧边栏找到`Secrets and variables`，点击展开选择`Actions`，点击`New repository secret`
-    
-3. 然后[创建](https://lopinx.github.io/mydevil/)一个名为`ACCOUNTS_JSON`的`Secret`，将 JSON 格式的账号密码字符串作为它的值，如下格式：  
+## 📋 使用方法
 
-``` json
-[  
-  { "username": "qishihuang", "password": "zhanghao", "panel": "panel3.serv00.com" },  
-  { "username": "zhaogao", "password": "daqinzhonggong", "panel": "panel1.serv00.com" },  
-  { "username": "heiheihei", "password": "shaibopengke", "panel": "panel.ct8.pl" }  
+### 第一步：配置 GitHub Secrets
+
+1. 进入 GitHub 仓库，点击右上角 **Settings** ⚙️
+2. 左侧边栏找到 **Secrets and variables** → **Actions**
+3. 点击 **New repository secret** 创建以下 Secret：
+
+---
+
+### 第二步：创建 `ACCOUNTS_JSON` Secret
+
+[点击此处生成 JSON](https://lopinx.github.io/mydevil/)
+
+```json
+[
+  { "username": "your_username", "password": "your_password", "panel": "panel3.serv00.com" },
+  { "username": "your_username2", "password": "your_password2", "panel": "panel1.serv00.com" }
 ]
 ```
 
-> 其中`panel`参数为面板域名，即为你所收到注册邮件的`panel*.serv00.com`值。
+> 💡 **提示**：`panel` 参数为你的注册邮件中的面板地址，如 `panel3.serv00.com`
 
-4. **非必须** 创建Telegram 机器人两个参数的 `Secret`：`TELEGRAM_BOT_TOKEN` 和  `TELEGRAM_CHAT_ID`
+---
 
-## 其他服务
+### 第三步（可选）：配置 Telegram 通知
 
-- PHP配置: <https://docs.serv00.com/PHP/#php-version>
+如需登录结果推送至 Telegram，额外创建两个 Secret：
 
-- Memcached配置: <https://docs.serv00.com/Memcached/>
+| Secret 名称 | 说明 |
+|-------------|------|
+| `TELEGRAM_BOT_TOKEN` | Telegram Bot Token |
+| `TELEGRAM_CHAT_ID` | 你的 Chat ID |
 
-  启动：memcached -s /usr/home/LOGIN/domains/DOMAIN/memcached.sock -d
+## 🛠️ 技术栈
 
-- Redis配置: <https://docs.serv00.com/Memcached/>
+- **运行时**: Node.js 20+
+- **浏览器自动化**: [Puppeteer](https://pptr.dev/)
+- **HTTP 请求**: [Axios](https://axios-http.com/)
+- **调度引擎**: [GitHub Actions](https://github.com/features/actions)
 
-## 特别注意
+## 📁 项目结构
 
-serv00虽然有10年使用期，但无法清除Apache和其它服务产生的日志，在容量限制情况下，不建议大日志产生的高流量服务和高频次作业任务。
+```
+mydevil/
+├── src/
+│   └── main.js          # 主程序入口
+├── docs/
+│   └── index.html       # JSON 生成器页面
+├── .github/
+│   └── workflows/
+│       └── login.yml    # GitHub Actions 配置
+├── README.md
+└── README_CN.md
+```
 
-## JSON生成
+## ⚠️ 注意事项
 
-- <https://lopinx.github.io/mydevil/>
+> **⚠️ 容量限制提醒**
+>
+> Serv00 虽有 10 年使用期，但日志文件无法清除。在存储空间有限的情况下，**不建议**运行产生大量日志的高流量服务或高频任务。
+
+## 🔗 相关链接
+
+- [JSON 生成器](https://lopinx.github.io/mydevil/) — 可视化生成账号配置
+- [Serv00 PHP 配置](https://docs.serv00.com/PHP/#php-version)
+- [Memcached 配置](https://docs.serv00.com/Memcached/) — 启动命令：`memcached -s /usr/home/lopins/domains/buchmistrz.pl/memcached.sock -m 32 -d`
+- [Redis 配置](https://docs.serv00.com/Memcached/)
+
+---
+
+
+<div align="center">
+
+ Made with ❤️ by [lopinx](https://github.com/lopinx)
+
+</div>
